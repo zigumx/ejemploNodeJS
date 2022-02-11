@@ -1,0 +1,89 @@
+// This Prisma Schema file was created by Nexus
+// If you're new to Nexus or Prisma you may find these docs useful:
+//
+//   - Prisma plugin docs http://nxs.li/nexus-plugin-prisma
+//   - Prisma Schema docs https://pris.ly/d/prisma-schema
+
+// This "Example" model has been generated for you by Nexus.
+// Nexus does this when you do not have any models defined.
+// For more detail and examples of working with your Prisma
+// Schema, refer to its complete docs at https://pris.ly/d/prisma-schema.
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.db"
+}
+
+generator prisma_client {
+  provider = "prisma-client-js"
+}
+
+model Transaction {
+  id                      Int                   @id @default(autoincrement())
+  request_action          String
+  req_id                  String?
+  trans_status_name       String?
+  trans_value             Float?
+  curr_code_alpha         String?
+  trans_value_settled     Float?
+  curr_code_alpha_settled String?
+  trans_exch_rate         String?
+  trans_id                Int?
+  cust_id                 Int?
+  xtl_cust_id             String?
+  po_id                   Int?
+  xtl_order_id            String?
+  batch_id                Int?
+  proc_name               String?
+  merch_acct_id           Int?
+  card_brand_name         String?
+  card_type               String?
+  card_prepaid            Int?
+  card_bank               String?
+  card_balance            String?
+  pmt_l4                  String?
+  pmt_id                  Int?
+  pmt_id_xtl              String?
+  proc_udf01              String?
+  proc_udf02              String?
+  proc_auth_response      String?
+  proc_retrieval_num      String?
+  proc_reference_num      String?
+  proc_redirect_url       String?
+  avs_response            String?
+  cvv_response            String?
+  request_api_version     String?
+  p3ds_response           String?
+  p3ds_vendor             String?
+  mbshp_id_1              String?
+  mbshp_id                String?
+  api_response            String?
+  api_advice              String?
+  service_response        String?
+  service_advice          String?
+  processor_response      String?
+  processor_advice        String?
+  industry_response       String?
+  industry_advice         String?
+  ref_field               String?
+  fullText                String?
+  kount_sessionid         String?
+  products                TransactionProducts[]
+}
+
+model TransactionProducts {
+  id            Int          @id @default(autoincrement())
+  po_li_id      String
+  po_li_count   String
+  po_li_amount  String
+  po_li_prod_id String
+  Transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  transactionId Int?
+}
+
+model Token {
+  id          Int    @id @default(autoincrement())
+  token_guid  String
+  token_ip    String
+  token_reqid String
+}
