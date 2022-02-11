@@ -1,8 +1,7 @@
-import React, { useState, useEffect, Fragment, useRef, useCallback } from 'react'
+import React, { useState, Fragment, useRef } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
-import Auth from '../src/components/Home/Auth'
 import SelectAction from '../src/components/Home/SelectApi'
 import Client from '../src/components/Home/Client'
 import Product from '../src/components/Home/Product'
@@ -11,27 +10,6 @@ import Card from '../src/components/Home/Card'
 import Transaction from '../src/components/Home/Transaction'
 import Send from '../src/components/Home/Send'
 // import Head from 'next/head'
-
-// const useStyles = makeStyles(theme => ({
-//     container: {
-//         display         : 'flex',
-//         alignItems      : 'center',
-//         flexDirection   : 'column',
-//         width           : '100%'
-//     },
-//     beneficios: {
-//         margin          : '40px 0px',
-//         width           : '100%',
-//         display         : 'flex',
-//         justifyContent  : 'center'
-//     },
-//     root: {
-//         '& > *': {
-//             margin: theme.spacing(1),
-//             width: '25ch',
-//         }
-//     }
-// }))
 
 const useStyles = makeStyles(() => ({
     title: {
@@ -44,15 +22,10 @@ const useStyles = makeStyles(() => ({
 
 export default function Home () {
     const classes = useStyles()
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
     const [action, setAction] = useState('')
-    const [siteId, setSiteId] = useState('')
-    const [merchantId, setMerchantId] = useState('')
     const [name, setName] = useState('')
     const [lastname, setLastname] = useState('')
     const [email, setEmail] = useState('')
-    const [productId, setProductId] = useState('')
     const [value, setValue] = useState('')
     const [count, setCount] = useState('')
     const [street, setStreet] = useState('')
@@ -65,74 +38,15 @@ export default function Home () {
     const [expiry, setExpiry] = useState('')
     const [message, setMessage] = useState('')
     const [poid, setPoid] = useState('')
-    const [MercSessId, setMercSessId] = useState('')
     const kountRef = useRef(null)
     // const apiVersion = '4.1'
     // const responseFormat = 'JSON'
     // const currency = 'MXN'
 
-
-    // useEffect(() => {
-    //     window.setTimeout(() => {
-    //         console.log(window.kountSessionId)
-    //         //@ts-ignore
-    //         console.log(kountRef?.current?.value)
-    //         //@ts-ignore
-    //         setMercSessId(String(kountRef?.current?.value || ''))
-    //     }, 0)
-    // }, [setMercSessId, kountRef])
-
-    // const changeKount = useCallback(event => {
-    //     console.log(event)
-    // }, [])
-
-    // useEffect(() => {
-    //     //@ts-ignore
-    //     const client = new window.ka.ClientSDK()
-    //     client.autoLoadEvents()
-    //     client.setupCallback(
-    //         {
-    //             // fires when collection has finished - this example would not enable the 
-    //             // login button until collection has completed
-    //             'collect-end':
-    //                 function(params: any) {
-    //                     // enable login button
-    //                     // loginButton = document.getElementById('login_button');
-    //                     // loginButton.removeAttribute('disabled');
-    //                     console.log(params)
-    //                     setMercSessId(params['MercSessId'])
-    //                     // now user can login and navigate away from the page
-    //                 },  
-    //             // fires when collection has started. 
-    //             'collect-begin': (params: any) => {
-    //                     // add hidden form element to post session id
-    //                     // var loginForm = document.forms['loginForm'];
-    //                     // var input = document.createElement('input');
-    //                     // input.type = 'hidden';
-    //                     // input.name = 'kaId';
-    //                     // input.value = params['MercSessId'];
-    //                     // loginForm.appendChild(input);
-    //                     console.log(params)
-    //                     setMercSessId(params['MercSessId'])
-    //                 }
-    //         }
-    //     )
-    //     // console.log(client)
-    // }, [setMercSessId])
-
     return (
         <Grid
             container
         >
-            {/* <Head>
-                <script
-                    type="text/javascript"
-                    src="/js/kount2.js"
-                    data-kountMerchantId="820500"
-                    data-kountHostUrl="https://tst.kaptcha.com"
-                    id="kountScript"
-                ></script>
-            </Head> */}
             <Grid
                 item
                 xs={ 8 }
@@ -143,16 +57,6 @@ export default function Home () {
                     >
                         Info
                     </Box>
-                    {/* <Auth
-                        username={ username }
-                        setUsername={ setUsername }
-                        password={ password }
-                        setPassword={ setPassword }
-                        siteId={ siteId }
-                        setSiteId={ setSiteId }
-                        merchantId={ merchantId }
-                        setMerchantId={ setMerchantId }
-                    /> */}
                     <SelectAction
                         action={ action }
                         setAction={ setAction }
@@ -170,8 +74,6 @@ export default function Home () {
                                         setEmail={ setEmail }
                                     />
                                     <Product
-                                        productId={ productId }
-                                        setProductId={ setProductId }
                                         value={ value }
                                         setValue={ setValue }
                                         count={ count }
@@ -201,7 +103,7 @@ export default function Home () {
                             ) : null
                         }
                         {
-                            action === 'DBTCREDIT' ? (
+                            action === 'CCREVERSE' ? (
                                 <Transaction
                                     poid={ poid }
                                     setPoid={ setPoid }
@@ -221,15 +123,10 @@ export default function Home () {
                     </Box>
                     <Send
                         setMessage={ setMessage }
-                        username={ username }
-                        password={ password }
-                        siteId={ siteId }
                         action={ action }
-                        merchantId={ merchantId }
                         name={ name }
                         lastname={ lastname }
                         email={ email }
-                        productId={ productId }
                         value={ value }
                         count={ count }
                         street={ street }
@@ -241,7 +138,6 @@ export default function Home () {
                         cvv={ cvv }
                         expiry={ expiry }
                         poid={ poid }
-                        mercSessId={ MercSessId }
                         kountRef={ kountRef }
                     />
                 </Box>

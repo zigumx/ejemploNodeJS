@@ -50,7 +50,7 @@ export default function SelectApi (props: SelectApiProps) {
                     <MenuItem value="TESTAUTH">TEST AUTH</MenuItem>
                     <MenuItem value="TESTGW">Check Service</MenuItem>
                     <MenuItem value="CCAUTHCAP">Sale</MenuItem>
-                    <MenuItem value="DBTCREDIT">Refund or Credit</MenuItem>
+                    <MenuItem value="CCREVERSE">Refund or Credit</MenuItem>
                 </Select>
             </Box>
         </Box>

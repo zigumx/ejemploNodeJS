@@ -19,8 +19,6 @@ const useStyles = makeStyles(() => ({
 }))
 
 interface ProductProps {
-    productId       : string
-    setProductId    : Function
     count           : string
     setCount        : Function
     value           : string
@@ -28,12 +26,8 @@ interface ProductProps {
 }
 
 export default function Product (props: ProductProps) {
-    const { productId, setProductId, count, setCount, value, setValue } = props
+    const { count, setCount, value, setValue } = props
     const classes = useStyles()
-
-    const handleChangeProductId = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        setProductId(event.target.value)
-    }, [setProductId])
 
     const handleChangeCount = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setCount(event.target.value)
@@ -53,12 +47,6 @@ export default function Product (props: ProductProps) {
             <Box
                 className={ classes.inputWrapper }
             >
-                <TextField
-                    label="Product ID"
-                    value={ productId }
-                    onChange={ handleChangeProductId }
-                    className={ classes.input }
-                />
                 <TextField
                     label="Valor"
                     value={ value }

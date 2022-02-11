@@ -87,11 +87,9 @@ schema.extendType({
                 request_action: schema.stringArg({
                     required: true
                 }),
-                merch_acct_id: schema.stringArg(),
                 cust_fname: schema.stringArg(),
                 cust_lname: schema.stringArg(),
                 cust_email: schema.stringArg(),
-                li_prod_id_1: schema.stringArg(),
                 li_value_1: schema.stringArg(),
                 li_count_1: schema.stringArg(),
                 bill_addr: schema.stringArg(),
@@ -99,7 +97,6 @@ schema.extendType({
                 bill_addr_state: schema.stringArg(),
                 bill_addr_zip: schema.stringArg(),
                 bill_addr_country: schema.stringArg(),
-                // pmt_numb: schema.stringArg(),
                 pmt_key: schema.stringArg(),
                 token_guid: schema.stringArg(),
                 pmt_expiry: schema.stringArg(),
@@ -125,7 +122,7 @@ schema.extendType({
                         params.append('cust_fname', args.cust_fname)
                         params.append('cust_lname', args.cust_lname)
                         params.append('cust_email', args.cust_email)
-                        params.append('li_prod_id_1', args.li_prod_id_1)
+                        params.append('li_prod_id_1', process.env.PRODUCTID)
                         params.append('li_value_1', args.li_value_1)
                         params.append('li_count_1', args.li_count_1)
                         params.append('bill_addr', args.bill_addr)
@@ -143,8 +140,9 @@ schema.extendType({
                         params.append('KOUNT_SESSIONID', args.kount_sessionid)
                     }
             
-                    if(request_action === 'DBTCREDIT') {
+                    if(request_action === 'CCREVERSE') {
                         params.append('request_ref_po_id', args.request_ref_po_id)
+                        params.append('CREDIT_ON_FAIL', '1')
                     }
 
                     console.log(params)

@@ -10,11 +10,9 @@ import gql from 'graphql-tag'
 const MAKE_TRANSACTION = gql`
     mutation MAKE_TRANSACTION (
         $request_action: String!
-        $merch_acct_id: String,
         $cust_fname: String,
         $cust_lname: String,
         $cust_email: String,
-        $li_prod_id_1: String,
         $li_value_1: String,
         $li_count_1: String,
         $bill_addr: String,
@@ -30,11 +28,9 @@ const MAKE_TRANSACTION = gql`
     ) {
         make_transaction (
             request_action: $request_action
-            merch_acct_id: $merch_acct_id,
             cust_fname: $cust_fname,
             cust_lname: $cust_lname,
             cust_email: $cust_email,
-            li_prod_id_1: $li_prod_id_1,
             li_value_1: $li_value_1,
             li_count_1: $li_count_1,
             bill_addr: $bill_addr,
@@ -108,15 +104,10 @@ const MAKE_TRANSACTION = gql`
 
 interface SendProps {
     setMessage      : Function
-    username        : string
-    password        : string
     action          : string
-    merchantId      : string
-    siteId          : string
     name            : string
     lastname        : string
     email           : string
-    productId       : string
     value           : string
     count           : string
     street          : string
@@ -128,7 +119,6 @@ interface SendProps {
     cvv             : string
     expiry          : string
     poid            : string
-    mercSessId      : string,
     kountRef        : object
 }
 
@@ -157,21 +147,18 @@ const createToken = async (card_pan: string) => {
 
         return (await fetch(`https://api.zigu.mx/payment/token_service.cfm`, config)).json()
     } catch (error) {
-        throw new Error(error.message)
+        const { message } = error as Error
+        throw new Error(message)
     }
 }
 
 export default function Send (props: SendProps) {
     const classes = useStyles()
-    // const { setMessage, username, password, action, merchantId, siteId, name,
-    //     lastname, email, productId, value, count, street, city, state, zipcode, country,
-    //     cardNumber, cvv, expiry, poid } = props
     const { setMessage, action, cardNumber, name, lastname, email, street, city,
-        state, zipcode, country, count, value, productId, cvv, expiry, kountRef } = props
+        state, zipcode, country, count, value, cvv, expiry, kountRef, poid } = props
     
     //@ts-ignore
     const mercSessId = String(kountRef?.current?.value || '')
-    // console.log(mercSessId)
 
     const [makeTransaction] = useMutation(MAKE_TRANSACTION, {
         errorPolicy: 'all'
@@ -202,7 +189,6 @@ export default function Send (props: SendProps) {
                         bill_addr_state: state,
                         bill_addr_zip: zipcode,
                         bill_addr_country: country,
-                        li_prod_id_1: productId,
                         li_value_1: value,
                         li_count_1: count,
                         token_guid: result.TOKEN_GUID,
@@ -215,14 +201,26 @@ export default function Send (props: SendProps) {
                 
                 setMessage(JSON.stringify(transactionResult?.data?.make_transaction, undefined, 2))
             }
+            if (action === 'CCREVERSE') {
+                const transactionResult = await makeTransaction({
+                    variables: {
+                        request_action: action,
+                        request_ref_po_id: poid
+                    }
+                })
+                console.log(transactionResult)
+                
+                setMessage(JSON.stringify(transactionResult?.data?.make_transaction, undefined, 2))
+            }
         } catch (error) {
             console.log('send error')
             console.log(error)
-            setMessage(error.message)
+            const { message } = error as Error
+            setMessage(message)
         }
 
     }, [setMessage, action, cardNumber, name, lastname, email, street, city, state,
-        zipcode, country, count, value, productId, cvv, expiry])
+        zipcode, country, count, value, cvv, expiry, poid])
 
     return (
         <Box
